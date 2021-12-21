@@ -4,12 +4,12 @@
 
   <!-- Movie Info -->
   <div v-else class="single-movie container">
-    <NuxtLink class="button" :to="{ name: 'index' }"> Back </NuxtLink>
+    <NuxtLink id="button" class="align-center" :to="{ name: 'index' }"> Back </NuxtLink>
     <div class="movie-info">
       <div class="movie-img">
         <img
           :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-          alt=""
+          :alt="`${movie.title}`"
         />
       </div>
       <div class="movie-content">
@@ -77,6 +77,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./assets/variables.scss";
+
+#button{
+  align-self: end;
+}
 .single-movie {
   color: #fff;
   min-height: 100vh;
@@ -84,8 +89,10 @@ export default {
   flex-direction: column;
   justify-content: center;
   padding: 32px 16px;
+  background-color: $secondary-color;
+  font-family: $font-family;
   .button {
-    align-self: flex-start;
+    align-self: flex-end;
     margin-bottom: 32px;
   }
   .movie-info {
@@ -93,17 +100,18 @@ export default {
     flex-direction: column;
     align-items: center;
     gap: 32px;
-    color: #fff;
+    color: $primary-color;
     @media (min-width: 800px) {
       flex-direction: row;
       align-items: flex-start;
     }
     .movie-img {
       img {
+        border-radius: 20px;
         max-height: 500px;
         width: 100%;
         @media (min-width: 800px) {
-          max-height: 700px;
+          max-height: 500px;
           width: initial;
         }
       }

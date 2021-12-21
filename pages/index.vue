@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <!-- Hero -->
-    <Hero />
+    
+    <TopBar />
 
     <!-- Search -->
     <div class="container search">
@@ -9,7 +9,7 @@
       v-show="searchInput !== ''" 
       @click="clearSearch"
       depressed
-      color="error"
+      id="button"
       >
         Clear Search
       </v-btn>
@@ -68,24 +68,24 @@
             <p class="overview">{{ movie.overview }}</p>
           </div>
           <div class="info">
-            <p class="title">
+            <!-- <p class="title">
               {{
                 movie.title.slice(0, 25)
               }}
               <span v-if="movie.title.length > 25">...</span>
-            </p>
+            </p> -->
             <p class="release">
               Released:
               {{
                 new Date(movie.release_date).toLocaleString('en-us', {
-                  month: 'long',
                   day: 'numeric',
+                  month: 'long',                  
                   year: 'numeric',
                 })
               }}
             </p>
             <NuxtLink
-              class="button button-light"
+              id="button"
               :to="{ name: 'movies-movieid', params: { id: movie.id } }"
             >Get More Info</NuxtLink>
           </div>
@@ -99,23 +99,6 @@
 import axios from 'axios'
 export default {
   name: 'home-page',
-  head() {
-    return {
-      title: 'Movie App - Latest Streaming Movie Info',
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: 'Get all the latest streaming movies in theaters & online',
-        },
-        {
-          hid: 'keywords',
-          name: 'keywords',
-          content: 'movies, stream, stremaing',
-        },
-      ],
-    }
-  },
   data() {
     return {
       movies: [],
@@ -136,7 +119,7 @@ export default {
   methods: {
     async getMovies() {
       const data = axios.get(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=37ed43a4f8eaa2abd75f9283692947bc&language=en-US&page=1`
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=d84daf9ffd56d83fb8b21434d969c1f6&language=en-US&page=1`
       )
       const result = await data
       result.data.results.forEach((movie) => {
@@ -145,7 +128,7 @@ export default {
     },
     async searchMovies() {
       const data = axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=37ed43a4f8eaa2abd75f9283692947bc&language=en-US&page=1&query=${this.searchInput}`
+        `https://api.themoviedb.org/3/search/movie?api_key=d84daf9ffd56d83fb8b21434d969c1f6&language=en-US&page=1&query=${this.searchInput}`
       )
       const result = await data
       result.data.results.forEach((movie) => {
@@ -166,7 +149,25 @@ export default {
 </script>
 
 <style lang="scss">
+@import "./assets/variables.scss";
 
+#button {
+  display: inline-block;
+  text-decoration: none;
+  color: #efefef;
+  padding: 0.5rem;
+  background-color: $primary-color;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease all;
+  align-items: center;
+  font-family: $font-family;
+  &:hover {
+    color: #010101;
+    background-color: transparent;
+  }
+}
 .home {
   .loading {
     padding-top: 120px;
@@ -175,9 +176,10 @@ export default {
   .search {
     display: flex;
     padding: 32px 16px;
+    align-items: center;
     input {
       max-width: 350px;
-      width: 100%;
+      width: 50%;
       padding: 12px 6px;
       font-size: 14px;
       border: none;
@@ -239,6 +241,7 @@ export default {
               0 2px 4px -1px rgba(0, 0, 0, 0.06);
           }
           .overview {
+            font-family: $font-family;
             line-height: 1.5;
             position: absolute;
             bottom: 0;
@@ -257,11 +260,17 @@ export default {
             font-size: 20px;
           }
           .release {
-            margin-top: 8px;
-            color: #c9c9c9;
+            margin-top: 1rem;
+            color: $primary-color;
+            font-family: $font-family;
           }
-          .button {
+          #button {
             margin-top: 8px;
+            font-family: $font-family;
+            &:hover {
+              color: #010101;
+              border-color: transparent;
+            }
           }
         }
       }
