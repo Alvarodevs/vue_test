@@ -52,7 +52,7 @@
               }}
             </p>
             <NuxtLink
-              class="button button-light"
+              id="button"
               :to="{ name: 'movies-id', params: { id: movie.id } }"
             >Get More Info</NuxtLink>
           </div>
